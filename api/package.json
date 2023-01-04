@@ -1,0 +1,15 @@
+{
+  "name": "espn-ff-kit-api",
+  "version": "1.0.0",
+  "description": "api conection for ESPN API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "espn-fantasy-football-api": "^0.16.1"
+  }
+}
