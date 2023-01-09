@@ -1,0 +1,25 @@
+{
+  "name": "espn-ff-kit",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "api": "npm start --workspace=api",
+    "client": "npm start --workspace=client"
+  },
+  "workspaces": [
+    "api",
+    "client"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mread1208/ff-kit.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mread1208/ff-kit/issues"
+  },
+  "homepage": "https://github.com/mread1208/ff-kit#readme"
+}
