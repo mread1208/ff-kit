@@ -1,34 +1,12 @@
-<router-outlet></router-outlet>
 <header class="header">
   Hello FF Kit
+  <ul>
+    <li>
+      <a routerLink="">Home</a>
+    </li>
+    <li>
+      <a routerLink="live-draft">Live Draft</a>
+    </li>
+  </ul>
 </header>
-<div class="container">
-  <div class="position-key">
-    <div class="position qb">
-      <p>QB</p>
-    </div>
-    <div class="position rb">
-      <p>RB</p>
-    </div>
-    <div class="position wr">
-      <p>WR</p>
-    </div>
-    <div class="position te">
-      <p>TE</p>
-    </div>
-    <div class="position kicker">
-      <p>Kicker</p>
-    </div>
-    <div class="position defense">
-      <p>Defense</p>
-    </div>
-  </div>
-  <div class="round-wrapper" *ngIf="draftData?.draftDetail">
-    <div *ngFor="let pick of draftData.draftDetail.picks" class="pick">
-      <p>
-        {{pick.roundId}}.{{pick.roundPickNumber}}
-        <br />{{pick.playerId}}
-      </p>
-    </div>
-  </div>
-</div>
+<router-outlet></router-outlet>

@@ -1,0 +1,44 @@
+.position-key {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  margin-bottom: 20px;
+
+  .position {
+    padding: 20px;
+    border: 1px solid #999;
+  }
+}
+
+.qb {
+  background: lightcoral;
+}
+.rb {
+  background: greenyellow;
+}
+.te {
+  background: lightblue;
+}
+.wr {
+  background: goldenrod;
+}
+.defense {
+  background: darkblue;
+}
+.kicker {
+  background: purple;
+  color: white;
+}
+
+.round-wrapper {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 10px;
+}
+
+.pick {
+  background: #fff;
+  padding: 20px;
+  text-align: center;
+  border-radius: 10px;
+}

@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 
-import { HttpService } from './services/http.service';
+import { HttpService } from 'src/app/services/http.service';
+
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  selector: 'app-live-draft',
+  templateUrl: './live-draft.component.html',
+  styleUrls: ['./live-draft.component.scss']
 })
-export class AppComponent implements OnInit {
+export class LiveDraftComponent implements OnInit {
+
   public draftData: any;
 
   // https://cran.r-project.org/web/packages/ffscrapr/vignettes/espn_getendpoint.html
@@ -23,4 +25,8 @@ export class AppComponent implements OnInit {
       this.draftData = data;
     });
   }
+
+  
+
+
 }
