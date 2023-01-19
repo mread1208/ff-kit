@@ -48,44 +48,43 @@ app.get("/team", async (req, res) => {
     res.send(teamById);
 });
 
+// http://localhost:3000/player/4239996
 app.get("/player/:playerId", async (req, res) => {
-    const filterByPlayerObj = {
+    const { playerId } = req.params;
+    const filterByPlayerObj = JSON.stringify({
         players: {
             filterIds: {
-                value:[3917792]
+                value:[playerId] // Player ID, 4239996 = Etienne, 3917792 = Daniel Jones, 4262921 = J. Jefferson
             },
-            filterRanksForSlotIds: {
-                value: [0,2,4,6,17,16]
-            },
+            // Not sure what this does yet
+            // filterRanksForSlotIds: {
+            //     value: [0,2,4,6,17,16]
+            // },
+            // Not sure what this does yet
             filterStatsForTopScoringPeriodIds: {
                 value:17,
+                // Adds additional applied stats... not sure what need for this yet
                 additionalValue:["002022","102022","002021","11202218","022022"]
             }
         }
-    };
-    // const filterByPlayerObj = {"players":{"filterIds":{"value":[3917792]},"filterRanksForSlotIds":{"value":[0,2,4,6,17,16]},"filterStatsForTopScoringPeriodIds":{"value":17,"additionalValue":["002022","102022","002021","11202219","022022"]}}}
+    });
     
     // https://fantasy.espn.com/apis/v3/games/ffl/seasons/2022/segments/0/leagues/${espnLeagueId}?scoringPeriodId=18&view=kona_playercard'
-    const httpCookie = `espnS2=${espnS2Cookie}; SWID=${espnSWIDCookie}; espnAuth=${JSON.stringify({"swid":`{${espnSWIDCookie}}`})}`;
+    const httpCookie = `espnAuth={"swid":"{${espnSWIDCookie}}"}; espn_s2=${espnS2Cookie};`;
 
     const httpOptions = {
         headers: {
             Accept: 'application/json',
-            'x-fantasy-filter': JSON.stringify(filterByPlayerObj),
-            // Cookie: httpCookie
+            'x-fantasy-filter': filterByPlayerObj,
+            Cookie: httpCookie
         },
     }
-
-    let data = ""
-    axios.get(
+    
+    let getPlayerData =  await axios.get(
         `https://fantasy.espn.com/apis/v3/games/ffl/seasons/2022/segments/0/leagues/${espnLeagueId}?scoringPeriodId=19&view=kona_playercard`,
-        httpOptions)
-        .then(response => data = response.data)
-        .catch(error => {
-            console.log(error.response);
-        });
+        httpOptions);
 
-    res.send(data);
+    res.send(getPlayerData.data);
 });
 
 app.listen(3000, () => {  
