@@ -26,6 +26,15 @@ myClient.setCookies({
     SWID: espnSWIDCookie
 });
 
+// http://localhost:3000/league?seasonId=2022
+app.get("/league", async (req, res) => {
+    const { seasonId } = req.query;
+    const leageInfo = await myClient.getLeagueInfo({
+        seasonId: parseInt(seasonId, 10),
+    });
+    res.send(leageInfo);
+});
+
 // http://localhost:3000/boxscores?seasonId=2022&matchupPeriodId=17&scoringPeriodId=17
 app.get("/boxscores", async (req, res) => {
     const { seasonId, scoringPeriodId } = req.query;
@@ -48,9 +57,19 @@ app.get("/team", async (req, res) => {
     res.send(teamById);
 });
 
-// http://localhost:3000/player/4239996
-app.get("/player/:playerId", async (req, res) => {
-    const { playerId } = req.params;
+// http://localhost:3000/teams?seasonId=2022&scoringPeriodId=17
+app.get("/teams", async (req, res) => {
+    const { seasonId, scoringPeriodId } = req.query;
+    const getTeamsAtWeek = await myClient.getTeamsAtWeek({
+        seasonId: parseInt(seasonId, 10),
+        scoringPeriodId: parseInt(scoringPeriodId, 10)
+    });
+    res.send(getTeamsAtWeek);
+});
+
+// http://localhost:3000/player?playerId=4239996&seasonId=2022
+app.get("/player", async (req, res) => {
+    const { playerId, seasonId  } = req.query;
     const filterByPlayerObj = JSON.stringify({
         players: {
             filterIds: {
@@ -69,7 +88,7 @@ app.get("/player/:playerId", async (req, res) => {
         }
     });
     
-    // https://fantasy.espn.com/apis/v3/games/ffl/seasons/2022/segments/0/leagues/${espnLeagueId}?scoringPeriodId=18&view=kona_playercard'
+    // https://fantasy.espn.com/apis/v3/games/ffl/seasons/${seasonId}/segments/0/leagues/${espnLeagueId}?scoringPeriodId=18&view=kona_playercard'
     const httpCookie = `espnAuth={"swid":"{${espnSWIDCookie}}"}; espn_s2=${espnS2Cookie};`;
 
     const httpOptions = {
@@ -81,7 +100,7 @@ app.get("/player/:playerId", async (req, res) => {
     }
     
     let getPlayerData =  await axios.get(
-        `https://fantasy.espn.com/apis/v3/games/ffl/seasons/2022/segments/0/leagues/${espnLeagueId}?scoringPeriodId=19&view=kona_playercard`,
+        `https://fantasy.espn.com/apis/v3/games/ffl/seasons/${seasonId}/segments/0/leagues/${espnLeagueId}?view=kona_playercard`,
         httpOptions);
 
     res.send(getPlayerData.data);
