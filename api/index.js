@@ -10,6 +10,7 @@
 // const { ... } = require('espn-fantasy-football-api/web-dev'); // web development build
 const { Client, Team } = require('espn-fantasy-football-api/node-dev'); // node development build
 const express = require("express");
+const cors = require('cors')
 const axios = require('axios');
 require('dotenv').config();
 
@@ -26,12 +27,20 @@ myClient.setCookies({
     SWID: espnSWIDCookie
 });
 
+var corsOptions = {
+  origin: 'http://localhost:4200',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
+app.use(cors(corsOptions))
+
 // http://localhost:3000/league?seasonId=2022
 app.get("/league", async (req, res) => {
     const { seasonId } = req.query;
     const leageInfo = await myClient.getLeagueInfo({
         seasonId: parseInt(seasonId, 10),
     });
+
+    console.log("REQUEST GET /league - " + seasonId)
     res.send(leageInfo);
 });
 
