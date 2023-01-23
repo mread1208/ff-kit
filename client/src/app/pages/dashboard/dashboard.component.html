@@ -1,2 +1,7 @@
-<p>dashboard works!</p>
-{{leagueData | json}}
+<h1>Fantasy Football Kit</h1>
+<h2>{{ leagueData?.name }} League</h2>
+<div class="teams">
+    <div class="teams" *ngFor="let team of leagueTeamsData">
+        <p>{{team.name}} ({{team.wins}} - {{team.losses}}<ng-container *ngIf="team.ties > 0"> - {{team.ties}}</ng-container>)</p>
+    </div>
+</div>

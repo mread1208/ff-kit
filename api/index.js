@@ -115,6 +115,76 @@ app.get("/player", async (req, res) => {
     res.send(getPlayerData.data);
 });
 
+// Players by position
+// http://localhost:3000/players/RB?seasonId=2022&scoringPeriodId=17
+app.get("/players/:position", async (req, res) => {
+    const { seasonId, scoringPeriodId } = req.query;
+    const { position } = req.params;
+    
+    let positionID = 0;
+    // Postion ID map ESPN needs
+    switch(position) {
+        case "QB":
+            positionID = 0;
+        break;
+        case "RB":
+            positionID = 2;
+        break;
+        case "WR":
+            positionID = 3;
+        break;
+        case "TE":
+            positionID = 6;
+        break;
+        case "FLEX":
+            positionID = 23;
+        break;
+        case "DE":
+            positionID = 16;
+        break;
+        case "K":
+            positionID = 17;
+        break;
+        default: 
+            positionID = 0;
+        break;
+    }
+    const filterByPlayerObj = JSON.stringify({
+        players: {
+            filterSlotIds: {
+                value:[positionID] // Value is position, 0 = QB, 2 = RB
+            },
+            filterRanksForScoringPeriodIds: {
+                value:[19]
+            },
+            limit: 50,
+            // Not sure on these yet...
+            offset: 0,
+            sortPercOwned:{sortAsc:false,sortPriority:1},
+            sortDraftRanks:{sortPriority:100,sortAsc:true,value:"STANDARD"},
+            filterRanksForRankTypes:{value:["PPR"]},
+            filterRanksForSlotIds:{value:[0,2,4,6,17,16]},
+            filterStatsForTopScoringPeriodIds:{
+                value:2,
+                additionalValue:["002022","102022","002021","11202219","022022"]
+            }
+        }
+    });
+    const httpCookie = `espnAuth={"swid":"{${espnSWIDCookie}}"}; espn_s2=${espnS2Cookie};`;
+    const httpOptions = {
+        headers: {
+            Accept: 'application/json',
+            'x-fantasy-filter': filterByPlayerObj,
+            Cookie: httpCookie
+        },
+    }
+    let getPlayerData =  await axios.get(
+        `https://fantasy.espn.com/apis/v3/games/ffl/seasons/${seasonId}/segments/0/leagues/${espnLeagueId}?scoringPeriodId=${scoringPeriodId}&view=kona_playercard`,
+        httpOptions);
+
+    res.send(getPlayerData.data);
+});
+
 app.listen(3000, () => {  
     console.log("Server running on 3000");
 });
